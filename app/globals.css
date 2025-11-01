@@ -2,63 +2,285 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import modern fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cal+Sans:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* CSS Custom Properties for Theme System */
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-rgb: 249, 250, 251;
-  --font-inter: 'Inter', Helvetica, Arial, sans-serif;
-  --font-helvetica: Helvetica, Arial, sans-serif;
+  /* Color Scheme Detection */
+  color-scheme: light dark;
+  
+  /* Light Theme Colors (Default) */
+  --color-primary: #2d4a52;      /* Deep Teal */
+  --color-secondary: #f5f2ed;    /* Warm Cream */
+  --color-accent: #d4a574;       /* Golden Sand */
+  --color-highlight: #87ceeb;    /* Sky Blue */
+  --color-deep: #8b7355;         /* Warm Brown */
+  --color-vibrant: #5a9fd4;      /* Ocean Blue */
+  
+  /* Background variations */
+  --color-background: #f5f2ed;
+  --color-surface: #ffffff;
+  --color-card: rgba(255, 255, 255, 0.8);
+  
+  /* Text colors */
+  --color-text-primary: #2d4a52;
+  --color-text-secondary: #8b7355;
+  --color-text-muted: #a0a0a0;
+  
+  /* Glass effect colors */
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-shadow: rgba(31, 38, 135, 0.37);
+  --glass-backdrop: blur(10px);
+  
+  /* Animation properties */
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.3s ease-in-out;
+  --transition-slow: 0.5s ease-in-out;
+  --transition-theme: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+/* Dark Theme Colors */
+.dark {
+  --color-primary: #9ec1d1;      /* Ice Blue */
+  --color-secondary: #463624;    /* Dark Brown */
+  --color-accent: #a85e60;       /* Dusty Rose */
+  --color-highlight: #f2758b;    /* Coral Pink */
+  --color-deep: #431b5d;         /* Deep Purple */
+  --color-vibrant: #914ac8;      /* Purple */
+  
+  /* Background variations */
+  --color-background: #0f0f0f;
+  --color-surface: #1a1a1a;
+  --color-card: rgba(0, 0, 0, 0.4);
+  
+  /* Text colors */
+  --color-text-primary: #9ec1d1;
+  --color-text-secondary: #a85e60;
+  --color-text-muted: #6a6a6a;
+  
+  /* Glass effect colors for dark theme */
+  --glass-bg: rgba(0, 0, 0, 0.2);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: rgba(0, 0, 0, 0.5);
+}
+
+/* System theme preference detection */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --color-primary: #9ec1d1;
+    --color-secondary: #463624;
+    --color-accent: #a85e60;
+    --color-highlight: #f2758b;
+    --color-deep: #431b5d;
+    --color-vibrant: #914ac8;
+    
+    --color-background: #0f0f0f;
+    --color-surface: #1a1a1a;
+    --color-card: rgba(0, 0, 0, 0.4);
+    
+    --color-text-primary: #9ec1d1;
+    --color-text-secondary: #a85e60;
+    --color-text-muted: #6a6a6a;
+    
+    --glass-bg: rgba(0, 0, 0, 0.2);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Global base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
-  font-family: var(--font-helvetica);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: var(--transition-theme);
+  overflow-x: hidden;
 }
 
+/* Typography enhancements */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cal Sans', 'Inter', sans-serif;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5em;
+  transition: color var(--transition-normal);
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 700;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 4vw, 3rem);
+}
+
+h3 {
+  font-size: clamp(1.25rem, 3vw, 2rem);
+}
+
+p {
+  margin-bottom: 1em;
+  color: var(--color-text-secondary);
+  transition: color var(--transition-normal);
+}
+
+a {
+  color: var(--color-vibrant);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-highlight);
+}
+
+/* Glassmorphism base classes */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px 0 var(--glass-shadow);
+  transition: var(--transition-theme);
+}
+
+.glass-subtle {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.2);
+}
+
+.glass-heavy {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 12px 40px 0 var(--glass-shadow);
+}
+
+/* Fallback for browsers that don't support backdrop-filter */
+@supports not (backdrop-filter: blur(10px)) {
+  .glass {
+    background: var(--color-card);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .dark .glass {
+    background: rgba(30, 30, 30, 0.9);
+  }
+}
+
+/* Enhanced blog-specific styles */
 .container {
   margin: 0 auto;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-helvetica);
+  padding: 0 1rem;
+  max-width: 1200px;
 }
 
 .blog-post {
-  transition: all 0.2s ease;
+  @apply glass rounded-xl p-6;
+  transition: all var(--transition-normal);
+  cursor: pointer;
 }
 
 .blog-post:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px 0 var(--glass-shadow);
+}
+
+.blog-card {
+  @apply glass;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.blog-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-vibrant), var(--color-highlight));
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.blog-card:hover::before {
+  opacity: 1;
 }
 
 .read-more {
-  color: #000;
+  color: var(--color-vibrant);
   font-weight: 500;
   position: relative;
+  display: inline-block;
+  transition: color var(--transition-fast);
 }
 
-.read-more:after {
+.read-more::after {
   content: '';
   position: absolute;
   bottom: -2px;
   left: 0;
   width: 0;
-  height: 1px;
-  background: currentColor;
-  transition: width 0.3s ease;
+  height: 2px;
+  background: var(--color-highlight);
+  transition: width var(--transition-normal);
 }
 
-.read-more:hover:after {
+.read-more:hover::after {
   width: 100%;
 }
 
+.read-more:hover {
+  color: var(--color-highlight);
+}
+
+/* Loading states and animations */
 .load-more {
+  @apply glass;
   position: relative;
   overflow: hidden;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  transition: all var(--transition-normal);
+  cursor: pointer;
+}
+
+.load-more:hover {
+  transform: translateY(-2px);
+  color: var(--color-vibrant);
 }
 
 .load-more-spinner {
   display: none;
+  margin-left: 0.5rem;
 }
 
 .load-more.loading .load-more-spinner {
@@ -67,10 +289,113 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Smooth focus styles */
+*:focus {
+  outline: 2px solid var(--color-vibrant);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Selection styles */
+::selection {
+  background-color: var(--color-highlight);
+  color: var(--color-background);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-vibrant);
+}
+
+/* Navigation glass effects */
+.nav-glass {
+  @apply glass-subtle;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+/* Hero section enhancements */
+.hero-glass {
+  @apply glass-heavy;
+  border-radius: 2rem;
+  padding: 3rem;
+  text-align: center;
+  position: relative;
+}
+
+.hero-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 2rem;
+  padding: 2px;
+  background: linear-gradient(135deg, var(--color-vibrant), var(--color-highlight), var(--color-accent));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: exclude;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0.5;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-glass {
+    padding: 2rem;
+    border-radius: 1rem;
   }
-  100% {
-    transform: rotate(360deg);
+  
+  .blog-post {
+    padding: 1rem;
   }
-} 
+  
+  h1 {
+    font-size: 2rem;
+  }
+}
+
+/* Utility classes for theme transitions */
+.theme-transition {
+  transition: var(--transition-theme);
+}
+
+.bg-glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  border: 1px solid var(--glass-border);
+}
+
+/* Print styles */
+@media print {
+  .glass, .glass-subtle, .glass-heavy {
+    background: white !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+  }
+}

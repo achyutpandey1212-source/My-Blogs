@@ -60,7 +60,7 @@ export default function Hero() {
           <div className="md:w-1/4">
             <div className="rounded-full overflow-hidden bg-primary h-60 w-60 md:h-48 md:w-48 mx-auto">
               <Image 
-                src="/blog-profile.png" 
+                src="" 
                 alt="Achyut's Profile Picture" 
                 width={240} 
                 height={240} 
